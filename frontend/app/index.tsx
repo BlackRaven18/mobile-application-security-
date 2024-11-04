@@ -8,7 +8,7 @@ import { router } from "expo-router";
 export default function Index() {
 
   const forbiddenChars = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"];
-  const backendUrl = "http://192.168.1.5:3000";
+  const backendUrl = "http://192.168.4.164:3000";
   // const backendUrl = "http://localhost:3000";
 
   const [message, setMessage] = useState("");

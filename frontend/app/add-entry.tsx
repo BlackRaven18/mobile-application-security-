@@ -1,4 +1,5 @@
 import AsyncStorageService from "@/services/AsyncStorageService";
+import SecureStorageService from '@/services/SecureStorageService';
 import { Stack } from "@react-native-material/core";
 import { router } from "expo-router/build/imperative-api";
 import { useState } from "react";
@@ -6,7 +7,8 @@ import { Button, TextInput } from "react-native-paper";
 
 export default function AddEntryScreen() {
 
-    const asyncStorageService = new AsyncStorageService();
+    //const asyncStorageService = new AsyncStorageService();
+    const secureStorageService = new SecureStorageService();
 
     const [applicationName, setApplicationName] = useState("");
     const [password, setPassword] = useState("");
@@ -24,10 +26,10 @@ export default function AddEntryScreen() {
             password: password
         }
 
-        asyncStorageService.getDataAsObject("passwords").then((passwords) => {
+        secureStorageService.getDataAsObject("passwords").then((passwords) => {
             if (passwords) {
                 passwords.push(data);
-                asyncStorageService.storeDataAsObject("passwords", passwords).finally(() => {
+                secureStorageService.storeDataAsObject("passwords", passwords).finally(() => {
                     console.log("Password added");
                     router.back();
                 })
@@ -35,7 +37,7 @@ export default function AddEntryScreen() {
                     console.error(error);
                 })
             } else {
-                asyncStorageService.storeDataAsObject("passwords", [data]).then(() => {
+                secureStorageService.storeDataAsObject("passwords", [data]).then(() => {
                     console.log("Password added");
                     router.back();
                 })

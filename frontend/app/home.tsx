@@ -1,5 +1,6 @@
 import PasswordEntry from '@/components/PasswordEntry';
 import AsyncStorageService from '@/services/AsyncStorageService';
+import SecureStorageService from '@/services/SecureStorageService';
 import { Stack } from '@react-native-material/core';
 import { router, useFocusEffect } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -14,10 +15,11 @@ type PasswordData = {
 export default function HomeScreen() {
 
     const [data, setData] = useState<PasswordData[]>([]);
-    const asyncStorageService = new AsyncStorageService();
+    const secureStorageService = new SecureStorageService();
+    //const asyncStorageService = new AsyncStorageService();
 
     const loadData = () => {
-        asyncStorageService.getDataAsObject("passwords").then((value) => {
+        secureStorageService.getDataAsObject("passwords").then((value) => {
             if (value) {
                 setData(value);
             }
@@ -39,7 +41,13 @@ export default function HomeScreen() {
     }
 
     return (
-        <Stack direction="column" style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Stack direction="column" style={
+            {
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
+        >
             {data.map((item, index) =>
                 <PasswordEntry
                     key={index}
@@ -47,8 +55,7 @@ export default function HomeScreen() {
                     password={item.password}
                     refresh={refresh}
                 />
-            )
-            }
+            )}
 
             <IconButton
                 mode="contained"
@@ -56,7 +63,6 @@ export default function HomeScreen() {
                 size={20}
                 onPress={() => router.push("add-entry")}
             />
-
         </Stack>
     )
 }

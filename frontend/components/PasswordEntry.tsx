@@ -1,4 +1,5 @@
 import AsyncStorageService from '@/services/AsyncStorageService';
+import SecureStorageService from '@/services/SecureStorageService';
 import { Stack } from '@react-native-material/core';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -12,19 +13,20 @@ type PasswordEntryProps = {
 
 export default function PasswordEntry(props: PasswordEntryProps) {
 
-    const asyncStorageService = new AsyncStorageService();
+    //const asyncStorageService = new AsyncStorageService();
+    const secureStorageService = new SecureStorageService();
 
     const [password, setPassword] = useState(props.password);
     const [hidePassword, setHidePassword] = useState(true);
 
     const removeEntry = () => {
-        asyncStorageService.getDataAsObject("passwords").then((passwords) => {
+        secureStorageService.getDataAsObject("passwords").then((passwords) => {
             if (passwords) {
                 const filteredPasswords = passwords.filter((
                     item: { application: string; password: string; }
                 ) => item.application !== props.application);
 
-                asyncStorageService.storeDataAsObject("passwords", filteredPasswords).then(() => {
+                secureStorageService.storeDataAsObject("passwords", filteredPasswords).then(() => {
                     console.log("Password removed");
                     props.refresh();
                 }).catch((error) => {
