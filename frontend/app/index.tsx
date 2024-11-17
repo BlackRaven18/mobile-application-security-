@@ -3,16 +3,17 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import axios from "axios";
+import { router } from "expo-router";
 
 export default function Index() {
 
   const forbiddenChars = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"];
-  //const backendUrl = "http://192.168.4.164:3000";
-   const backendUrl = "http://localhost:3000";
+  const backendUrl = "http://192.168.4.164:3000";
+  // const backendUrl = "http://localhost:3000";
 
   const [message, setMessage] = useState("");
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("admin");
+  const [password, setPassword] = useState("admin");
 
   const onLoginFieldChange = (value: string) => {
     if (forbiddenChars.some((char) => value.includes(char))) {
@@ -48,6 +49,7 @@ export default function Index() {
     axios.post(backendUrl + "/login", { login: login, password: password }).then((response) => {
       console.log(response.data);
       setMessage(response.data + ": " + login);
+      router.replace("home");
     })
       .catch((error) => {
         console.log(error);
