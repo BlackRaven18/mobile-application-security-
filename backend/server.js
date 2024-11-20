@@ -1,3 +1,5 @@
+const fs = require('fs');
+const https = require('https');
 const express = require('express')
 const sqlite3 = require('sqlite3').verbose();
 var cors = require('cors')
@@ -10,11 +12,24 @@ const db = new sqlite3.Database('./testdb.db', (err) => {
   console.log('Connected to the database.');
 });
 
+const privateKey = fs.readFileSync('certificate/private.key', 'utf8');
+const certificate = fs.readFileSync('certificate/cert.crt', 'utf8');
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+};
+//...
 
 const app = express()
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
 const port = 3000
+
+https.createServer(credentials, app)
+  .listen(443, () => {
+    console.log('HTTPS server is running on https://localhost');
+  });
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -29,15 +44,15 @@ app.post('/login', (req, res) => {
   }
 
   const stmt = db.prepare("SELECT * FROM users WHERE login = ? AND password = ?");
-  
+
   stmt.get([req.body.login, req.body.password], (err, row) => {
     if (err) {
       console.error(err.message);
     }
     if (row) {
-      res.send("User found")
+      res.status(200).json({"message": "Success"});
     } else {
-      res.send("User not found")
+      res.status(401).json({"message": "Unauthorized"});
     }
   })
 })

@@ -8,12 +8,14 @@ import { router } from "expo-router";
 export default function Index() {
 
   const forbiddenChars = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"];
-  const backendUrl = "http://192.168.4.164:3000";
-  // const backendUrl = "http://localhost:3000";
+  // const backendUrl = "https://local.test"
+  // const backendUrl = "https://local.test"
+  // const backendUrl = "http://192.168.4.164:3000";
+   const backendUrl = "http://local.test:3000";
 
   const [message, setMessage] = useState("");
-  const [login, setLogin] = useState("admin");
-  const [password, setPassword] = useState("admin");
+  const [login, setLogin] = useState("test");
+  const [password, setPassword] = useState("test");
 
   const onLoginFieldChange = (value: string) => {
     if (forbiddenChars.some((char) => value.includes(char))) {
@@ -46,14 +48,16 @@ export default function Index() {
       return;
     }
     console.log("Sended login request");
-    axios.post(backendUrl + "/login", { login: login, password: password }).then((response) => {
-      console.log(response.data);
-      setMessage(response.data + ": " + login);
-      router.replace("home");
-    })
+    axios.post(backendUrl + "/login", { login: login, password: password })
+      .then((response) => {
+        console.log(response);
+
+        setMessage(response.data.message);
+        router.replace("/home");
+      })
       .catch((error) => {
         console.log(error);
-        setMessage(error);
+        //setMessage(error.response.data.message);
       })
   }
 
