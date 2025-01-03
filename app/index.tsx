@@ -1,6 +1,11 @@
 import { Text, View } from "react-native";
 
 export default function Index() {
+
+  const secretApiKey = 'this-is-super-secret-api-key';
+
+  console.log(secretApiKey);
+
   return (
     <View
       style={{
@@ -9,7 +14,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Hello There General Kenobi!</Text>
     </View>
   );
 }
