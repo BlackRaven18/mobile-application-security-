@@ -3,6 +3,7 @@ import AsyncStorageService from '@/services/AsyncStorageService';
 import SecureStorageService from '@/services/SecureStorageService';
 import { Stack } from '@react-native-material/core';
 import { router, useFocusEffect } from 'expo-router';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { IconButton } from 'react-native-paper';
 
@@ -16,7 +17,7 @@ export default function HomeScreen() {
 
     const [data, setData] = useState<PasswordData[]>([]);
     const secureStorageService = new SecureStorageService();
-    //const asyncStorageService = new AsyncStorageService();
+    const asyncStorageService = new AsyncStorageService();
 
     const loadData = () => {
         secureStorageService.getDataAsObject("passwords").then((value) => {
@@ -61,7 +62,7 @@ export default function HomeScreen() {
                 mode="contained"
                 icon="plus"
                 size={20}
-                onPress={() => router.push("add-entry")}
+                onPress={() => router.push("/add-entry")}
             />
         </Stack>
     )

@@ -35,9 +35,10 @@ app.post('/login', (req, res) => {
       console.error(err.message);
     }
     if (row) {
-      res.send("User found")
+      res.status(200).send("User found")
     } else {
-      res.send("User not found")
+      res.status(404).send("User not found");
+
     }
   })
 })

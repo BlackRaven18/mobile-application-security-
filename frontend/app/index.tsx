@@ -8,7 +8,7 @@ import { router } from "expo-router";
 export default function Index() {
 
   const forbiddenChars = ["/", "\\", ":", "*", "?", "\"", "<", ">", "|"];
-  const backendUrl = "http://192.168.4.164:3000";
+  const backendUrl = "http://192.168.1.6:3000";
   // const backendUrl = "http://localhost:3000";
 
   const [message, setMessage] = useState("");
@@ -49,11 +49,11 @@ export default function Index() {
     axios.post(backendUrl + "/login", { login: login, password: password }).then((response) => {
       console.log(response.data);
       setMessage(response.data + ": " + login);
-      router.replace("home");
+      router.navigate("/home");
     })
       .catch((error) => {
         console.log(error);
-        setMessage(error);
+        setMessage(error.response.data);
       })
   }
 
